@@ -1,0 +1,15 @@
+requests
+pandas
+numpy
+scikit-learn
+xgboost
+weasyprint
+joblib
+seaborn
+matplotlib
+psycopg2-binary
+gensim
+streamlit
+plotly
+tensorflow
+wheel
