@@ -4,9 +4,11 @@ import json
 import time
 import psycopg2
 import sqlite3
+import os
+import db
 from collections import deque
 db_path = "/mnt/typeshyt/local_db/clash_data.db"
-API_KEY = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6ImMyOGM5OGYzLTAxOGYtNDczNy1iOWE4LTEyODdjNzY4Y2FlYiIsImlhdCI6MTc3NTQxNDc4MSwic3ViIjoiZGV2ZWxvcGVyL2IwODQ1NGE4LTIyMmYtZjUyMi1lMmU5LTRiNDExMDA1NmNlOCIsInNjb3BlcyI6WyJyb3lhbGUiXSwibGltaXRzIjpbeyJ0aWVyIjoiZGV2ZWxvcGVyL3NpbHZlciIsInR5cGUiOiJ0aHJvdHRsaW5nIn0seyJjaWRycyI6WyIyMDUuMTc4Ljc2LjEzNSJdLCJ0eXBlIjoiY2xpZW50In1dfQ.HNiuhfzujgmsxrISmvJNcbvoL-qU5BBQfLHzUvlHxuJSbFPx8jmqZGWq5W60HJlDhAs3oOwmg_IbbMJK2pDa_A'
+API_KEY = os.getenv("Clash_Key")
 base_url = "https://api.clashroyale.com/v1"
 headers = {
     'Accept': 'application/json',
@@ -52,13 +54,7 @@ def processMatchData(matchs):
         return
         
     # FIXED: Connection opened ONCE out of loop, timeout increased, WAL enabled
-    conn = psycopg2.connect(
-    dbname="thehub_db",
-    user="linkjt",
-    password="qwertYdada0",
-    host="192.168.4.60",
-    port="5432"
-)
+    conn = db.get_connection()
     cursor = conn.cursor()
     
     for match in matchs:
