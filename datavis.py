@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import numpy as np
+import db
 import sqlite3
 import psycopg2
 from datetime import datetime, timedelta, date
@@ -21,13 +22,7 @@ def TodayAndYesterday():
 @st.cache_data
 def grabdata():
     cur_day, last_day, seven_ago_str = TodayAndYesterday()
-    conn = psycopg2.connect(
-    dbname="thehub_db",
-    user="linkjt",
-    password="qwertYdada0",
-    host="192.168.4.60",
-    port="5432"
-)
+    conn = db.getConnection()
     
     daily_market = pd.read_sql("""
             SELECT date, SUM(num_wins) * 1.0 / SUM(num_games) as market_avg
