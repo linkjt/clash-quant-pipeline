@@ -3,16 +3,9 @@ from datetime import datetime, timedelta, date
 import time
 import psycopg2
 import hashlib
+import db
 
-# --- 1. CENTRALIZED DATABASE CONNECTION ---
-def get_db_connection():
-    return psycopg2.connect(
-        dbname="thehub_db",
-        user="linkjt",
-        password="qwertYdada0",
-        host="192.168.4.60",
-        port="5432"
-    )
+
 
 # --- 2. INITIALIZE TABLES ---
 
@@ -26,7 +19,7 @@ def DateToWeek(dayofbattle):
     return weekstart.strftime("%Y-%m-%d")
 
 def CreateAvgAllTimeSQL():
-    conn = get_db_connection()
+    conn = db.get_connection()
     cursor = conn.cursor()
 
     cursor.execute("SELECT SUM(total_games) FROM daily_total_games")
