@@ -17,7 +17,7 @@ This is what's novel. I start out by creating a bunch of indicators, RSI, ROC, S
 
 ## Application
 
-There are two major directions that I want to do to finish off this project. Decks and data visualization.
+There are two major directions that I want to do to finish off this project. Decks and data visualization. The final step however I want to take is to take this to application.
 
 ### Decks
 
@@ -25,7 +25,7 @@ Finally after 1 month, deck generation is real. Originally my plan was to use th
 
 ### Data Visualization
 
-I did a lot of data visualization at the start using matplot when I was still utilizing JSON but now I have so many moving parts that I need better visualization. This will especially help when I am looking at correlations and clustering for deck applications. I am going to make a streamlit console for basically looking at all the data. That is probably my first next step.
+Data visualization is probably one of the most intresting things that I have done so far. I used streamlit to do data visulization. I first just used it to show a table of all of my infromation. But now I use it to show the charts of winrates and boilinger bands and such to look at trends to try to add more features to my prediction modles. Now I want to overlay other infromation, for example the GBM and LSTM predictions on the chart are on when they were made so I got to shift them and such. The link is http://205.178.76.135:9021/ . I will eventually add it to my normal website and then also clean it up and make it more visualy appealing.
 
 ## Summary
 Clash is cool, but math + clash is cooler and better.
