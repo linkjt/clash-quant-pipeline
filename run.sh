@@ -1,4 +1,5 @@
 #!/bin/bash
+# maneesh on the beat shabang
 export PYTHONUNBUFFERED=1
 cd /mnt/typeshyt/thehub/python
 # activation not required when running via env/bin/python directly
