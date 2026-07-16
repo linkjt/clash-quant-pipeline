@@ -7,7 +7,7 @@ import db
 
 
 
-# --- 2. INITIALIZE TABLES ---
+
 
 
 def DateToWeek(dayofbattle):
@@ -83,7 +83,7 @@ def AnalyzeMatchesSQL(cursor, m_id, match):
                 
             deck.append(card_name)
             
-            # Insert standard daily stats
+            
             cursor.execute('''
                 INSERT INTO daily_card_stats (date, card_id, card_name, num_wins, num_games)
                 VALUES (%s, %s, %s, %s, 1)
@@ -92,7 +92,7 @@ def AnalyzeMatchesSQL(cursor, m_id, match):
                     num_games = daily_card_stats.num_games + 1
             ''', (date_str, card_id, card_name, is_win, is_win))
             
-        # Sort, Hash, and Insert the complete Deck
+       
         deck.sort()
         stringdeck = "|".join(deck).encode('utf-8')
         deckhash = hashlib.md5(stringdeck).hexdigest()
@@ -105,11 +105,11 @@ def AnalyzeMatchesSQL(cursor, m_id, match):
 ''', (deckhash, deck))
 
             
-    # Mark as completely processed (Stats + Decks)
+   
     cursor.execute("UPDATE raw_matches SET processed = 3 WHERE match_id = %s", (m_id,))
     return True
 
-# --- BACKFILL TOOL: Extracts decks from previously processed matches ---
+
 def deck_fix(cursor, m_id, match):
     if not match:
         return False
@@ -148,7 +148,7 @@ def deck_fix(cursor, m_id, match):
     DO UPDATE SET games_played = decks.games_played + 1
 ''', (deckhash, deck))
             
-    # Upgrade status to 2 so it doesn't get scanned again
+   
     cursor.execute("UPDATE raw_matches SET processed = 3 WHERE match_id = %s", (m_id,))
     return True
     
@@ -157,7 +157,7 @@ def deck_fix_cycle():
         conn = get_db_connection()
         cursor = conn.cursor()
         
-        # Grab matches that have stats (1) but NO decks extracted yet
+   
         cursor.execute("SELECT match_id, match_data FROM raw_matches WHERE processed = 2 OR processed = 1 LIMIT 100")
         unprocessed = cursor.fetchall()
         
@@ -170,7 +170,7 @@ def deck_fix_cycle():
         for m_id, m_json in unprocessed:
             try:
                 match = json.loads(m_json)
-                deck_fix(cursor, m_id, match) # Call the fix, NOT the main analyzer
+                deck_fix(cursor, m_id, match) 
             except Exception as e:
                 print(f"Error processing backfill for {m_id}: {e}")
                 cursor.execute("UPDATE raw_matches SET processed = -1 WHERE match_id = %s", (m_id,))
@@ -183,7 +183,7 @@ def cleanup_old_data(days_to_keep=30):
     target_date = (datetime.now() - timedelta(days=days_to_keep)).strftime("%Y%m%d")
     
     with conn.cursor() as cur:
-        # Added mandatory parentheses around the OR statement
+
         cur.execute("""
             DELETE FROM raw_matches 
             WHERE (processed = 1 OR processed = 2  OR processed = 3)
@@ -198,7 +198,7 @@ def run_analysis_cycle():
         conn = get_db_connection()
         cursor = conn.cursor()
         
-        # Grab entirely raw matches
+       
         cursor.execute("SELECT match_id, match_data FROM raw_matches WHERE processed = 0 LIMIT 100")
         unprocessed = cursor.fetchall()
         
@@ -221,6 +221,6 @@ def run_analysis_cycle():
 
 cleanup_old_data()
 
-# Only run deck_fix_cycle() if you have historical data you want to extract decks from.
+
 #deck_fix_cycle() 
 run_analysis_cycle()
