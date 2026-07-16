@@ -53,7 +53,7 @@ def processMatchData(matchs):
     if not matchs:
         return
         
-    # FIXED: Connection opened ONCE out of loop, timeout increased, WAL enabled
+  
     conn = db.get_connection()
     cursor = conn.cursor()
     
