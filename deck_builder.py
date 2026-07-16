@@ -4,7 +4,7 @@ import numpy as np
 import os
 from gensim.models import Word2Vec
 
-# Define Win Conditions globally so the entire script can reference them
+
 WIN_CONDITIONS = [
     "Hog Rider", "Balloon", "Giant", "Golem", "Lava Hound", "Royal Giant", 
     "Battle Ram", "Ram Rider", "Wall Breakers", "Goblin Giant", "Elixir Golem", 
@@ -15,7 +15,7 @@ CHAMPIONS = ["Archer Queen", "Golden Knight", "Skeleton King", "Mighty Miner", "
 def get_latest_data():
     conn = db.get_connection()
     
-    # ADDED: upper_bollinger and lower_bollinger to extract exact historical volatility
+
     query = """
         SELECT q.card_id, q.xgb_up, q.upper_bollinger, q.lower_bollinger, 
                c.cluster_num, d.card_name, d.num_wins, d.num_games,
