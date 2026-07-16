@@ -61,19 +61,17 @@ all_data['final_winrate'] *= (0.5 / all_data['market_avg'])
 all_data = all_data.merge(all_quant, on=['card_id', 'date'], how='left')
 all_data = all_data.sort_values(['card_name', 'date']).reset_index(drop=True)
 
-# 1. Update Target: Is the winrate going up TOMORROW compared to TODAY?
-all_data['future_winrate'] = all_data.groupby('card_name')['final_winrate'].shift(-1) # Shift -1 for tomorrow
+all_data['future_winrate'] = all_data.groupby('card_name')['final_winrate'].shift(-1) 
 
 all_data['3day_forward_winrate'] = all_data.groupby('card_name')['final_winrate'].transform(
     lambda x: x.rolling(3, min_periods=1).mean().shift(-3)
 )
 
 
-# Only assign labels where we actually HAVE a tomorrow. This prevents the last day from being labeled 0 and causing the model to learn nonsense.
 all_data.loc[all_data['future_winrate'].notna(), 'target_is_up'] = (all_data['future_winrate'] > all_data['final_winrate']).astype(int)
 
 #all_data.loc[all_data['future_winrate'].notna(), 'target_is_up'] = (all_data['3day_forward_winrate'] > all_data['final_winrate']).astype(int)
-# 2. Time-Weighted Decay Setup
+
 alpha = 0.5 
 def time_weighted_average(x):
     weights = (1 - alpha) ** np.arange(len(x))[::-1]
@@ -113,13 +111,12 @@ features = [
     'days_since_1st_monday', 'tw_winrate_7d', 'tw_usage_7d', 'winrate_std_7d'
 ]
 
-# Drop rows missing features or TARGET (This naturally removes the inference day from training)
+
 ml_df = all_data.dropna(subset=['target_is_up'] + features)
 
 X = ml_df[features]
 y = ml_df['target_is_up']
 
-# CRITICAL FIX: shuffle=False to prevent temporal data leakage!
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, shuffle=False)
 X_train_sub, X_val, y_train_sub, y_val = train_test_split(X_train, y_train, test_size=0.15, random_state=42, shuffle=False)
 
