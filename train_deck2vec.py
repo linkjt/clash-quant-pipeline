@@ -37,8 +37,7 @@ def train_deck2vec():
         workers=4
     )
     
-    # Ensure models directory exists
-    os.makedirs("models", exist_ok=True)
+
     model.save("models/deck2vec.model")
     print("Deck2Vec model saved to models/deck2vec.model")
 
