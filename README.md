@@ -25,7 +25,7 @@ Finally after 1 month, deck generation is real. Originally my plan was to use th
 
 ### Data Visualization
 
-Data visualization is probably one of the most intresting things that I have done so far. I used streamlit to do data visulization. I first just used it to show a table of all of my infromation. But now I use it to show the charts of winrates and boilinger bands and such to look at trends to try to add more features to my prediction modles. Now I want to overlay other infromation, for example the GBM and LSTM predictions on the chart are on when they were made so I got to shift them and such. The link is http://205.178.76.135:9021/ . I will eventually add it to my normal website and then also clean it up and make it more visualy appealing.
+Data visualization is probably one of the most intresting things that I have done so far. I used streamlit to do data visulization. I first just used it to show a table of all of my infromation. But now I use it to show the charts of winrates and boilinger bands and such to look at trends to try to add more features to my prediction modles. Now I want to overlay other infromation, for example the GBM and LSTM predictions on the chart are on when they were made so I got to shift them and such. The link is https://clash.freshbeets.dev/.
 
 ## Summary
 Clash is cool, but math + clash is cooler and better.
